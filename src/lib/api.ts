@@ -47,7 +47,7 @@ export const api = {
 
 export function errorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
-    if (!err.response) return `Can't reach the backend at ${API_BASE}. Is the NestJS server running?`;
+    if (!err.response) return "Something went wrong";
     const m = (err.response.data as { message?: string | string[] })?.message;
     return Array.isArray(m) ? m.join(", ") : m ?? `Request failed (${err.response.status})`;
   }
