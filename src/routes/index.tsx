@@ -25,10 +25,10 @@ function Index() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
       <header className="mb-10 text-center">
-        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-xs tracking-widest text-neon">
+        <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-[11px] uppercase tracking-[0.08em] text-neon">
           {"// dev mentorship, brewed fresh ☕"}
         </motion.p>
-        <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mt-3 text-4xl font-bold tracking-tight sm:text-6xl">
+        <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mt-3 text-4xl font-normal tracking-tight sm:text-6xl">
           CoffeeChat <span className="text-muted-foreground">&</span> <span className="text-gradient">Code Review</span>
         </motion.h1>
         <p className="mt-3 text-muted-foreground">with Dragan · <span className="font-mono">git checkout -b better-code</span></p>
@@ -37,8 +37,8 @@ function Index() {
       <div className="glass mx-auto mb-8 flex w-fit gap-1 rounded-full p-1">
         {(["guest", "host"] as Tab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)} className="relative rounded-full px-5 py-2 font-mono text-sm">
-            {tab === t && <motion.span layoutId="pill" className="absolute inset-0 rounded-full bg-gradient-neon glow" transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
-            <span className={`relative ${tab === t ? "text-primary-foreground font-semibold" : "text-muted-foreground"}`}>
+            {tab === t && <motion.span layoutId="pill" className="absolute inset-0 rounded-full bg-secondary" transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
+            <span className={`relative ${tab === t ? "text-foreground font-medium" : "text-muted-foreground"}`}>
               {t === "guest" ? "book.a.slot()" : "host.dashboard()"}
             </span>
           </button>
@@ -283,7 +283,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function NeonButton({ className = "", ...p }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <button {...p} className={`rounded-xl bg-gradient-neon px-4 py-2.5 font-semibold text-primary-foreground transition hover:brightness-110 hover:glow active:scale-[0.98] disabled:opacity-60 ${className}`} />
+    <button {...p} className={`rounded-lg bg-mist px-3 py-2 text-sm font-medium transition hover:brightness-110 active:scale-[0.98] disabled:opacity-60 ${className}`} />
   );
 }
 
