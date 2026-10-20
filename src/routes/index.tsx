@@ -85,7 +85,7 @@ function HostView() {
         onSubmit={(e) => { e.preventDefault(); create.mutate({ ...form, duration: Number(form.duration) }); }}
         className="glass h-fit space-y-4 rounded-2xl p-6"
       >
-        <h2 className="text-lg font-semibold">New slot <span className="font-mono text-xs text-neon">POST /slots</span></h2>
+        <h2 className="text-lg font-semibold">New slot</h2>
         <Field label="date">
           <input required type="date" className="field" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
         </Field>
