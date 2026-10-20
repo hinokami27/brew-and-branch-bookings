@@ -76,7 +76,7 @@
     font-feature-settings: "calt", "kern", "liga", "ss03";
     background-image:
       radial-gradient(50rem 26rem at 20% -12%, color-mix(in oklab, var(--neon) 16%, transparent), transparent),
-      radial-gradient(46rem 26rem at 85% -8%, color-mix(in oklab, #143ca3 35%, transparent), transparent);
+      radial-gradient(46rem 26rem at 88% 108%, color-mix(in oklab, #143ca3 35%, transparent), transparent);
     background-attachment: fixed;
     min-height: 100vh;
   }
