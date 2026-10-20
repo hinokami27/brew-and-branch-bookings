@@ -26,7 +26,8 @@ export interface BookSlotResponse {
   aiConfirmationMessage: string;
 }
 
-const API_BASE = (import.meta.env["VITE_API_URL"] as string | undefined) ?? "http://localhost:3000/api";
+const API_BASE =
+  (import.meta.env["VITE_API_URL"] as string | undefined) ?? "https://booking-back-gmn2.onrender.com/api";
 
 const http = axios.create({ baseURL: API_BASE, timeout: 15000 });
 
