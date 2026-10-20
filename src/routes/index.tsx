@@ -26,10 +26,10 @@ function Index() {
     <div className="mx-auto max-w-5xl px-4 py-10 sm:py-16">
       <header className="mb-10 text-center">
         <motion.p initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="font-mono text-[11px] uppercase tracking-[0.08em] text-neon">
-          {"// dev mentorship, brewed fresh ☕"}
+          {"// dev mentorship, brewed fresh"}
         </motion.p>
-        <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mt-3 text-4xl font-normal tracking-tight sm:text-6xl">
-          CoffeeChat <span className="text-muted-foreground">&</span> <span className="text-gradient">Code Review</span>
+        <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-gradient mt-3 text-4xl font-normal tracking-tight sm:text-6xl">
+          CoffeeChat &amp; Code Review
         </motion.h1>
         <p className="mt-3 text-muted-foreground">with Dragan · <span className="font-mono">git checkout -b better-code</span></p>
       </header>
