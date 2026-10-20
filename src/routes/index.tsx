@@ -258,6 +258,7 @@ function SlotsState({ q, children, emptyText, filter }: {
     return (
       <div className="glass rounded-2xl border-destructive/40 p-8 text-center">
         <p className="font-mono text-4xl">{"{ 503 }"}</p>
+        <p className="mt-3 font-semibold">Backend is taking a coffee break</p>
         <NeonButton className="mt-5" onClick={() => q.refetch()}>Retry</NeonButton>
       </div>
     );
