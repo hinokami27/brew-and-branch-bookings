@@ -35,6 +35,8 @@ export const api = {
   baseUrl: API_BASE,
   getSlots: async () => (await http.get<TimeSlot[]>("/slots")).data,
   createSlot: async (input: CreateSlotInput) => (await http.post<TimeSlot>("/slots", input)).data,
+  updateSlot: async (id: string, input: Partial<CreateSlotInput>) => (await http.patch<TimeSlot>(`/slots/${id}`, input)).data,
+  deleteSlot: async (id: string) => { await http.delete(`/slots/${id}`); },
   bookSlot: async (id: string, input: BookSlotInput): Promise<BookSlotResponse> => {
     // The backend writes the confirmation message with AI, which can take ~10s on a cold start.
     const data = (await http.post(`/slots/${id}/book`, input, { timeout: 60000 })).data as Record<string, unknown>;

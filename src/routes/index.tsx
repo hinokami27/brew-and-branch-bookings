@@ -122,24 +122,77 @@ function HostView() {
           {(data) => (
             <ul className="space-y-3">
               {sortSlots(data).map((s, i) => (
-                <motion.li key={s.id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }}
-                  className="glass flex items-center justify-between gap-4 rounded-xl p-4">
-                  <div>
-                    <p className="font-semibold">{formatDate(s.date)} · <span className="font-mono">{s.startTime}</span></p>
-                    <p className="font-mono text-xs text-muted-foreground">
-                      {s.duration} min{s.isBooked && s.guestName ? ` · ${s.guestName} <${s.guestEmail}>` : ""}
-                    </p>
-                  </div>
-                  <span className={`shrink-0 rounded-full border px-3 py-1 font-mono text-xs ${s.isBooked ? "border-accent text-accent glow-2" : "border-neon text-neon glow"}`}>
-                    {s.isBooked ? "booked" : "available"}
-                  </span>
-                </motion.li>
+                <HostSlotRow key={s.id} s={s} i={i} />
               ))}
             </ul>
           )}
         </SlotsState>
       </section>
     </div>
+  );
+}
+
+function HostSlotRow({ s, i }: { s: TimeSlot; i: number }) {
+  const qc = useQueryClient();
+  const [editing, setEditing] = useState(false);
+  const [confirmDel, setConfirmDel] = useState(false);
+  const [form, setForm] = useState({ date: s.date, startTime: s.startTime, duration: s.duration });
+  const refresh = () => qc.invalidateQueries({ queryKey: ["slots"] });
+  const update = useMutation({
+    mutationFn: () => api.updateSlot(s.id, { ...form, duration: Number(form.duration) }),
+    onSuccess: () => { setEditing(false); refresh(); },
+  });
+  const del = useMutation({ mutationFn: () => api.deleteSlot(s.id), onSuccess: refresh });
+  const err = update.error ?? del.error;
+
+  return (
+    <motion.li layout initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }}
+      className="glass rounded-xl p-4">
+      {editing ? (
+        <form onSubmit={(e) => { e.preventDefault(); update.mutate(); }} className="space-y-3">
+          <div className="grid gap-2 sm:grid-cols-3">
+            <input required type="date" className="field" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+            <input required type="time" className="field" value={form.startTime} onChange={(e) => setForm({ ...form, startTime: e.target.value })} />
+            <input required type="number" min={5} step={5} className="field" value={form.duration} onChange={(e) => setForm({ ...form, duration: Number(e.target.value) })} />
+          </div>
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={() => { setEditing(false); setForm({ date: s.date, startTime: s.startTime, duration: s.duration }); }}
+              className="rounded-lg border px-3 py-1.5 font-mono text-xs text-muted-foreground hover:text-foreground">cancel</button>
+            <NeonButton type="submit" disabled={update.isPending} className="!px-3 !py-1.5 text-xs">{update.isPending ? "Saving…" : "Save"}</NeonButton>
+          </div>
+        </form>
+      ) : (
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="font-semibold">{formatDate(s.date)} · <span className="font-mono">{s.startTime}</span></p>
+            <p className="font-mono text-xs text-muted-foreground">
+              {s.duration} min{s.isBooked && s.guestName ? ` · ${s.guestName} <${s.guestEmail}>` : ""}
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <span className={`rounded-full border px-3 py-1 font-mono text-xs ${s.isBooked ? "border-accent text-accent glow-2" : "border-neon text-neon glow"}`}>
+              {s.isBooked ? "booked" : "available"}
+            </span>
+            {confirmDel ? (
+              <>
+                <button onClick={() => del.mutate()} disabled={del.isPending}
+                  className="rounded-lg border border-destructive px-2.5 py-1 font-mono text-xs text-destructive hover:bg-destructive/10">
+                  {del.isPending ? "…" : "delete?"}
+                </button>
+                <button onClick={() => setConfirmDel(false)} className="font-mono text-xs text-muted-foreground hover:text-foreground">no</button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => setEditing(true)} aria-label="Edit slot" className="rounded-lg border px-2.5 py-1 font-mono text-xs text-muted-foreground hover:border-neon hover:text-neon">edit</button>
+                <button onClick={() => setConfirmDel(true)} aria-label="Delete slot" className="rounded-lg border px-2.5 py-1 font-mono text-xs text-muted-foreground hover:border-destructive hover:text-destructive">del</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+      {confirmDel && s.isBooked && !editing && <p className="mt-2 text-xs text-destructive">This slot is booked by {s.guestName ?? "a guest"}.</p>}
+      {err && <p className="mt-2 text-sm text-destructive">{errorMessage(err)}</p>}
+    </motion.li>
   );
 }
 
