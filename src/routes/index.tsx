@@ -294,17 +294,21 @@ function SlotsState({ q, children, emptyText, filter }: {
   emptyText: string;
   filter?: (s: TimeSlot) => boolean;
 }) {
+  const { slow, verySlow } = useBackendWake(q.isPending);
   if (q.isPending) {
     return (
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="glass animate-pulse space-y-3 rounded-2xl p-5">
-            <div className="h-3 w-20 rounded bg-muted" />
-            <div className="h-8 w-28 rounded bg-muted" />
-            <div className="h-3 w-24 rounded bg-muted" />
-            <div className="h-10 rounded-xl bg-muted" />
-          </div>
-        ))}
+      <div className="space-y-4">
+        {slow && <WakeNotice verySlow={verySlow} />}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="glass animate-pulse space-y-3 rounded-2xl p-5">
+              <div className="h-3 w-20 rounded bg-muted" />
+              <div className="h-8 w-28 rounded bg-muted" />
+              <div className="h-3 w-24 rounded bg-muted" />
+              <div className="h-10 rounded-xl bg-muted" />
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -328,4 +332,33 @@ function SlotsState({ q, children, emptyText, filter }: {
     );
   }
   return <>{children(data)}</>;
+}
+
+function WakeNotice({ verySlow }: { verySlow: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="glass flex items-start gap-3 rounded-2xl border-neon/40 px-5 py-4"
+    >
+      <motion.span
+        aria-hidden
+        animate={{ y: [0, -5, 0], opacity: [1, 0.55, 1] }}
+        transition={{ repeat: Infinity, duration: 1.6 }}
+        className="mt-0.5 text-2xl"
+      >
+        ☕
+      </motion.span>
+      <div>
+        <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-neon">
+          {verySlow ? "still waking up…" : "waking up the backend…"}
+        </p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {verySlow
+            ? "This one is taking longer than usual — it can need up to 30 seconds to stretch fully awake. Your slots will appear the moment it's ready."
+            : "The free-tier backend dozes off between visitors, so this first request can take up to 30 seconds. Your slots will appear as soon as it's awake."}
+        </p>
+      </div>
+    </motion.div>
+  );
 }
