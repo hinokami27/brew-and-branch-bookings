@@ -36,6 +36,13 @@ Technical & Integration Requirements:
 
 This project was built with [Lovable](https://lovable.dev).
 
+## What I Would Improve With More Time
+
+- **Cancellation & Rescheduling Workflows:** Implement automated email notifications (via Resend) when a host cancels a session, giving guests a seamless one-click link to pick an alternative slot.
+- **Google Calendar Integration:** Sync confirmed bookings directly to the host's Google Calendar and auto-hide conflicting slots.
+- **Multi-Host Authentication:** Add secure user accounts so multiple hosts can claim custom booking profile URLs.
+- **Time Zone Support:** Dynamic client-side time zone conversion for guests booking across different regions.
+
 ## Build with Lovable
 
 Continue developing this project in the [Lovable editor](https://lovable.dev/projects/748abdce-4505-46db-8754-f269eaf82fad).
