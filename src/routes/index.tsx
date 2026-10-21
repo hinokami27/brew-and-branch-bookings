@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, errorMessage, type TimeSlot } from "@/lib/api";
+import { useBackendWake } from "@/hooks/use-backend-wake";
 
 export const Route = createFileRoute("/")({
   head: () => ({

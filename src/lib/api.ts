@@ -29,7 +29,8 @@ export interface BookSlotResponse {
 const API_BASE =
   (import.meta.env["VITE_API_URL"] as string | undefined) ?? "https://booking-back-gmn2.onrender.com/api";
 
-const http = axios.create({ baseURL: API_BASE, timeout: 15000 });
+// The free tier sleeps when idle, so a cold-start request can take up to ~30s before it answers.
+const http = axios.create({ baseURL: API_BASE, timeout: 45000 });
 
 export const api = {
   baseUrl: API_BASE,
